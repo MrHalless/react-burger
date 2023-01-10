@@ -21,6 +21,11 @@
 
 .ingredients {
   margin-top: 40px;
+  width: 100%;
+  height: 100%;
+}
+
+.ingredients__list {
   max-height: 600px;
   overflow-y: auto;
 }

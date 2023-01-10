@@ -11,18 +11,18 @@ type BurgerIngredientsProps = {
 };
 
 const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ data }) => {
-  const [currentTab, setCurrentTab] = useState("");
+  const [currentTab, setCurrentTab] = useState(ingredientGroups[0].title);
+
   const tabList = ingredientGroups.map((tab, i) => {
     return (
       <Link
         key={i}
-        to={`ingredients-block-${i}`}
+        to={`ingredients-block-${++i}`}
         spy={true}
         smooth={true}
         duration={700}
         offset={-20}
         containerId="ingredients"
-        onSetActive={() => setCurrentTab(tab.title)}
       >
         <Tab
           value={tab.title}
@@ -38,7 +38,7 @@ const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ data }) => {
   const IngredientsGroups = ingredientGroups.map((item, i) => (
     <BurgerIngredientsList
       key={i}
-      id={i}
+      id={++i}
       title={item.title}
       data={data.filter((el) => el.type === item.type)}
     />

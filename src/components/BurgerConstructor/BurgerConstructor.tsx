@@ -6,6 +6,7 @@ import React, { useMemo } from "react";
 import { DataApi } from "../../models";
 import s from "./BurgerConstructor.module.css";
 import BurgerConstructorCard from "./BurgerConstructorCard/BurgerConstructorCard";
+import cn from "classnames";
 
 type BurgerConstructorProps = {
   data: DataApi[];
@@ -42,7 +43,9 @@ const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ data }) => {
       </div>
       <div className={s.totalPriceWrapper}>
         <div className={s.totalPrice}>
-          <p className={s.totalPrice__price}>{allPrice}</p>
+          <p className={cn(s.totalPrice__price, `constructor-element__price`)}>
+            {allPrice}
+          </p>
           <CurrencyIcon type="primary" />
         </div>
         <Button htmlType="button" type="primary" size="large">
