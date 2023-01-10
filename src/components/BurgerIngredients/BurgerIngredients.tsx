@@ -1,79 +1,58 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useState } from "react";
 import { DataApi } from "../../models";
+import { ingredientGroups } from "../../utils/ingredientGroups";
 import s from "./BurgerIngredients.module.css";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
+import { Link } from "react-scroll";
 
 type BurgerIngredientsProps = {
   data: DataApi[];
 };
 
 const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ data }) => {
-  const [currentTab, setcurrentTab] = useState("all");
+  const [currentTab, setCurrentTab] = useState("");
+  const tabList = ingredientGroups.map((tab, i) => {
+    return (
+      <Link
+        key={i}
+        to={`ingredients-block-${i}`}
+        spy={true}
+        smooth={true}
+        duration={700}
+        offset={-20}
+        containerId="ingredients"
+        onSetActive={() => setCurrentTab(tab.title)}
+      >
+        <Tab
+          value={tab.title}
+          active={currentTab === tab.title}
+          onClick={setCurrentTab}
+        >
+          {tab.title}
+        </Tab>
+      </Link>
+    );
+  });
+
+  const IngredientsGroups = ingredientGroups.map((item, i) => (
+    <BurgerIngredientsList
+      key={i}
+      id={i}
+      title={item.title}
+      data={data.filter((el) => el.type === item.type)}
+    />
+  ));
 
   return (
-    <div className={s.wrapper}>
-      <p className="text text_type_main-large title mb-5">Соберите бургер</p>
-      <div className={s.tabs}>
-        <Tab
-          value={"buns"}
-          active={currentTab === "buns"}
-          onClick={setcurrentTab}
-        >
-          Булки
-        </Tab>
-        <Tab
-          value={"sauces"}
-          active={currentTab === "sauces"}
-          onClick={setcurrentTab}
-        >
-          Соусы
-        </Tab>
-        <Tab
-          value={"toppings"}
-          active={currentTab === "toppings"}
-          onClick={setcurrentTab}
-        >
-          Начинки
-        </Tab>
-      </div>
+    <section className={s.wrapper}>
+      <div className={s.tabs}>{tabList}</div>
       <div className={s.ingredients}>
-        {currentTab === "all" && (
-          <>
-            <BurgerIngredientsList
-              title={"Булки"}
-              data={data.filter((item) => item.type === "bun")}
-            />
-            <BurgerIngredientsList
-              title={"Соусы"}
-              data={data.filter((item) => item.type === "sauce")}
-            />
-            <BurgerIngredientsList
-              title={"Начинки"}
-              data={data.filter((item) => item.type === "main")}
-            />
-          </>
-        )}
-        {currentTab === "buns" && (
-          <BurgerIngredientsList
-            title={"Булки"}
-            data={data.filter((item) => item.type === "bun")}
-          />
-        )}
-        {currentTab === "sauces" && (
-          <BurgerIngredientsList
-            title={"Соусы"}
-            data={data.filter((item) => item.type === "sauce")}
-          />
-        )}
-        {currentTab === "toppings" && (
-          <BurgerIngredientsList
-            title={"Начинки"}
-            data={data.filter((item) => item.type === "main")}
-          />
-        )}
+        <ul id="ingredients" className={s.ingredients__list}>
+          {IngredientsGroups}
+        </ul>
       </div>
-    </div>
+    </section>
   );
 };
 

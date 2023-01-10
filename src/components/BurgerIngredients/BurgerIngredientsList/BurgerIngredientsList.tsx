@@ -5,18 +5,20 @@ import s from "./BurgerIngredientsList.module.css";
 import cn from "classnames";
 
 type BurgerIngredientsListProps = {
+  id: number;
   data: DataApi[];
   title: string;
 };
 
 const BurgerIngredientsList: React.FC<BurgerIngredientsListProps> = ({
+  id,
   data,
   title,
 }) => {
   const titleClasses = cn(s.listWrapper__title, "text text_type_main-default");
 
   return (
-    <div className={s.listWrapper}>
+    <div id={`ingredients-block-${id}`} className={s.listWrapper}>
       <span className={titleClasses}>{title}</span>
       <div className={s.listWrapper__content}>
         {data &&
