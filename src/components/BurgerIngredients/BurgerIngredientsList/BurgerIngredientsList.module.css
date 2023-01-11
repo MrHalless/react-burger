@@ -1,0 +1,19 @@
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.listWrapper__content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.listWrapper__title {
+  text-align: start;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  margin-bottom: 24px;
+}

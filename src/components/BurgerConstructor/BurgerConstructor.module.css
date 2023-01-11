@@ -1,0 +1,52 @@
+.section {
+  padding-top: 100px;
+}
+
+.burgerConstructorWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 600px;
+}
+
+.burgerConstructorWrapper__bun {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 8px;
+}
+
+.toppingList {
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.totalPriceWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.totalPrice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 48px;
+}
+
+.totalPrice__price {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 36px;
+  margin-right: 10px;
+}
+
+.totalPriceWrapper svg {
+  transform: scale(1.5);
+}
