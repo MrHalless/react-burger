@@ -1,6 +1,8 @@
-import { url } from "./constant";
+import { checkResponse } from "./checkResponse";
+import { URL, INGREDIENTS_END_POINTS } from "./constant";
 
 export const getData = async () => {
-  const response = await fetch(url);
-  return await response.json();
+  return await fetch(`${URL}${INGREDIENTS_END_POINTS.GET_INGREDIENTS}`).then(
+    checkResponse
+  );
 };

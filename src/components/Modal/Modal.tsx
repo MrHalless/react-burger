@@ -14,7 +14,7 @@ type ModalProps = {
 
 const Modal: React.FC<ModalProps> = ({ children, title, onClose }) => {
   const modalRoot = document.getElementById("modals") as HTMLElement;
-  const handleKeyPress = (e: any) => {
+  const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       onClose();
     }
