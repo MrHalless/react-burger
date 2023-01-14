@@ -1,0 +1,29 @@
+.ingredient-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ingredient-details_img {
+  width: 480px;
+  height: 240px;
+}
+
+.ingredient-details_list {
+  list-style-type: none;
+  display: flex;
+  gap: 0 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.ingredient-details_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 112px;
+}
+
+.ingredient-details_name {
+  text-align: center;
+}
