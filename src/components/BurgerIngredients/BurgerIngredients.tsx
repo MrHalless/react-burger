@@ -1,17 +1,19 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useState } from "react";
-import { DataApi } from "../../models";
+
 import { ingredientGroups } from "../../utils/ingredientGroups";
 import s from "./BurgerIngredients.module.css";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 import { Link } from "react-scroll";
+import { useStore } from "../../hooks/useStore";
+import { useDispatch } from "../../hooks/useDispatch";
+import { setCurrentTab } from "../../store/burgerIngredientsSlice";
 
-type BurgerIngredientsProps = {
-  data: DataApi[];
-};
-
-const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ data }) => {
-  const [currentTab, setCurrentTab] = useState(ingredientGroups[0].title);
+const BurgerIngredients: React.FC = () => {
+  const dispatch = useDispatch();
+  const {
+    burgerIngredients: { ingredients, currentTab },
+  } = useStore();
 
   const tabList = ingredientGroups.map((tab, i) => {
     return (
@@ -26,8 +28,8 @@ const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ data }) => {
       >
         <Tab
           value={tab.title}
-          active={currentTab === tab.title}
-          onClick={setCurrentTab}
+          active={currentTab === tab.type}
+          onClick={() => dispatch(setCurrentTab(tab.type))}
         >
           {tab.title}
         </Tab>
@@ -40,7 +42,7 @@ const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ data }) => {
       key={i}
       id={++i}
       title={item.title}
-      data={data.filter((el) => el.type === item.type)}
+      data={ingredients.filter((el) => el.type === item.type)}
     />
   ));
 

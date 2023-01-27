@@ -1,12 +1,12 @@
 import React from "react";
-import { DataApi } from "../../../models";
+import { BurgerIngredientType } from "../../../models";
 import BurgerIngridientsCard from "../BurgerIngredientsCard/BurgerIngredientsCard";
 import s from "./BurgerIngredientsList.module.css";
 import cn from "classnames";
 
 type BurgerIngredientsListProps = {
   id: number;
-  data: DataApi[];
+  data: BurgerIngredientType[];
   title: string;
 };
 
@@ -23,11 +23,7 @@ const BurgerIngredientsList: React.FC<BurgerIngredientsListProps> = ({
       <div className={s.listWrapper__content}>
         {data &&
           data.map((ingredient, index) => (
-            <BurgerIngridientsCard
-              key={index}
-              data={ingredient}
-              count={index === 1 ? index : undefined}
-            />
+            <BurgerIngridientsCard key={index} ingredient={ingredient} />
           ))}
       </div>
     </div>

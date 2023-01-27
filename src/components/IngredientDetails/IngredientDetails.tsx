@@ -1,19 +1,21 @@
 import React from "react";
 import cn from "classnames";
 import s from "./IngredientDetails.module.css";
-import { DataApi } from "../../models";
+import { useStore } from "../../hooks";
 
-type IngredientDetailsProps = {
-  data: DataApi;
-};
+const IngredientDetails: React.FC = () => {
+  const {
+    currentIngredient: { ingredient },
+  } = useStore();
 
-const IngredientDetails: React.FC<IngredientDetailsProps> = ({ data }) => {
+  if (!ingredient) return null;
+
   return (
     <>
       <div className={cn(s["ingredient-details"])}>
         <img
-          src={data.image_large}
-          alt={data.name}
+          src={ingredient.image_large}
+          alt={ingredient.name}
           className={cn(s["ingredient-details_img"], "mb-4")}
         />
         <h3
@@ -22,7 +24,7 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = ({ data }) => {
             "text text_type_main-medium mb-8"
           )}
         >
-          {data.name}
+          {ingredient.name}
         </h3>
         <ul className={cn(s["ingredient-details_list"])}>
           <li className={cn(s["ingredient-details_item"])}>
@@ -34,7 +36,7 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = ({ data }) => {
             <span
               className={"text text_type_digits-default text_color_inactive"}
             >
-              {data.calories}
+              {ingredient.calories}
             </span>
           </li>
           <li className={cn(s["ingredient-details_item"])}>
@@ -46,7 +48,7 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = ({ data }) => {
             <span
               className={"text text_type_digits-default text_color_inactive"}
             >
-              {data.proteins}
+              {ingredient.proteins}
             </span>
           </li>
           <li className={cn(s["ingredient-details_item"])}>
@@ -58,7 +60,7 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = ({ data }) => {
             <span
               className={"text text_type_digits-default text_color_inactive"}
             >
-              {data.fat}
+              {ingredient.fat}
             </span>
           </li>
           <li className={cn(s["ingredient-details_item"])}>
@@ -70,7 +72,7 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = ({ data }) => {
             <span
               className={"text text_type_digits-default text_color_inactive"}
             >
-              {data.carbohydrates}
+              {ingredient.carbohydrates}
             </span>
           </li>
         </ul>

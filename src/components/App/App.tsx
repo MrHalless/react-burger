@@ -1,46 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import "./App.css";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import { getData } from "../../utils/getData";
+import { fetchIngredients } from "../../store/burgerIngredientsSlice";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDispatch, useStore } from "../../hooks/index";
+import { resetCurrentIngredient } from "../../store/currentIngredientSlice";
+import { setOpenOrderModal } from "../../store/orderSlice";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import Loader from "../Loader/Loader";
+import BadRequest from "../BadRequest/BadRequest";
 
 function App() {
-  const [state, setState] = useState({
-    data: [],
-    pending: true,
-    error: null,
-  });
+  const dispatch = useDispatch();
+  const {
+    burgerIngredients: { loading, error },
+    currentIngredient: { isOpen: isOpenCurrentIngredientModal },
+    order: { isOpen: isOpenOrderModal },
+  } = useStore();
 
   useEffect(() => {
-    setState({ ...state, pending: true });
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
-    getData()
-      .then((data) =>
-        setState({ ...state, data: data.data, pending: false, error: null })
-      )
-      .catch((error) => {
-        setState({ ...state, pending: false, error: error.message });
-      });
-  }, []);
+  const handlerOnCloseCurrentIngredientModal = useCallback(() => {
+    dispatch(resetCurrentIngredient());
+  }, [dispatch]);
+
+  const handlerOnCloseOrderModal = useCallback(() => {
+    dispatch(setOpenOrderModal(false));
+  }, [dispatch]);
 
   return (
     <div className="App">
       <AppHeader />
       <div className="App-main-wrapper">
-        {state.error && (
-          <div
-            className={`mt-10 text text_type_main-large`}
-          >{`Ошибка: ${state.error}`}</div>
+        {loading === "pending" && <Loader />}
+        {loading === "succeeded" && (
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
         )}
-
-        {state.pending ? (
-          <div className="preloader"></div>
-        ) : (
-          <>
-            <BurgerIngredients data={state.data} />
-            <BurgerConstructor data={state.data} />
-          </>
+        {loading === "failed" && <BadRequest error={error} />}
+        {isOpenCurrentIngredientModal && (
+          <Modal
+            title={"Детали ингредиента"}
+            onClose={handlerOnCloseCurrentIngredientModal}
+          >
+            <IngredientDetails />
+          </Modal>
+        )}
+        {isOpenOrderModal && (
+          <Modal title={undefined} onClose={handlerOnCloseOrderModal}>
+            <OrderDetails />
+          </Modal>
         )}
       </div>
     </div>

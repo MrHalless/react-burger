@@ -26,6 +26,6 @@
 }
 
 .ingredients__list {
-  max-height: 600px;
+  max-height: 620px;
   overflow-y: auto;
 }

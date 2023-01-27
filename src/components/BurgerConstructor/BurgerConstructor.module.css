@@ -5,8 +5,16 @@
 .burgerConstructorWrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
   width: 600px;
+  min-height: 600px;
+}
+
+.burgerConstructorWrapper_hover {
+  border: 1px solid #8585ad;
+  border-radius: 20px;
 }
 
 .burgerConstructorWrapper__bun {
@@ -23,30 +31,4 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
-}
-
-.totalPriceWrapper {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-right: 16px;
-}
-
-.totalPrice {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 48px;
-}
-
-.totalPrice__price {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 48px;
-  line-height: 36px;
-  margin-right: 10px;
-}
-
-.totalPriceWrapper svg {
-  transform: scale(1.5);
 }
