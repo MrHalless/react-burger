@@ -1,6 +1,5 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useState } from "react";
-
 import { ingredientGroups } from "../../utils/ingredientGroups";
 import s from "./BurgerIngredients.module.css";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
@@ -12,8 +11,12 @@ import { setCurrentTab } from "../../store/burgerIngredientsSlice";
 const BurgerIngredients: React.FC = () => {
   const dispatch = useDispatch();
   const {
-    burgerIngredients: { ingredients, currentTab },
+    burgerIngredients: { ingredients },
   } = useStore();
+
+  const [currentTabName, setCurrentTabName] = React.useState<string>(
+    ingredientGroups[0].title
+  );
 
   const tabList = ingredientGroups.map((tab, i) => {
     return (
@@ -25,10 +28,11 @@ const BurgerIngredients: React.FC = () => {
         duration={700}
         offset={-20}
         containerId="ingredients"
+        onSetActive={() => setCurrentTabName(tab.title)}
       >
         <Tab
           value={tab.title}
-          active={currentTab === tab.type}
+          active={currentTabName === tab.title}
           onClick={() => dispatch(setCurrentTab(tab.type))}
         >
           {tab.title}

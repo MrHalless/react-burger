@@ -20,12 +20,8 @@ const initialIngredientsState = {
 export const postOrders = createAsyncThunk(
   "currentIngredient/postOrders",
   async (ingredients: string[]) => {
-    try {
-      const response = await postOrdersData(ingredients);
-      return response.order.number;
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const response = await postOrdersData(ingredients);
+    return response.order.number;
   }
 );
 

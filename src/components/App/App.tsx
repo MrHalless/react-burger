@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import "./App.css";
+import s from "./App.module.css";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
@@ -36,9 +36,9 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div className={s["App"]}>
       <AppHeader />
-      <div className="App-main-wrapper">
+      <main className={s["App-main-wrapper"]}>
         {loading === "pending" && <Loader />}
         {loading === "succeeded" && (
           <DndProvider backend={HTML5Backend}>
@@ -60,7 +60,7 @@ function App() {
             <OrderDetails />
           </Modal>
         )}
-      </div>
+      </main>
     </div>
   );
 }

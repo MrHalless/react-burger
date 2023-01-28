@@ -19,12 +19,8 @@ const initialIngredientsState = {
 export const fetchIngredients = createAsyncThunk(
   "burgerIngredients/fetchIngredients",
   async () => {
-    try {
-      const response = await getData();
-      return response.data;
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const response = await getData();
+    return response.data;
   }
 );
 
