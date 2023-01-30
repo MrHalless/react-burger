@@ -1,46 +1,56 @@
-import React, { useState } from "react";
+import React, { useCallback } from "react";
 import s from "./BurgerIngredientsCard.module.css";
 import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DataApi } from "../../../models";
-import Modal from "../../Modal/Modal";
-import IngredientDetails from "../../IngredientDetails/IngredientDetails";
+import { useDrag } from "react-dnd";
+import shortid from "shortid";
+import { BurgerIngredientType } from "../../../models";
+import { useDispatch } from "../../../hooks";
+import { setCurrentIngredient } from "../../../store/currentIngredientSlice";
 
-type sProps = {
-  data: DataApi;
-  count: number | undefined;
+type BurgerIngredientsCardProps = {
+  ingredient: BurgerIngredientType;
 };
 
-const BurgerIngredientsCard: React.FC<sProps> = ({ data, count }) => {
-  const [isShowModal, setIsShowModal] = useState(false);
+const BurgerIngredientsCard: React.FC<BurgerIngredientsCardProps> = ({
+  ingredient,
+}) => {
+  const dispatch = useDispatch();
+  const [{ opacity }, dragRef] = useDrag({
+    item: { ...ingredient, innerId: shortid.generate() },
+    type: "ingredient",
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
 
-  const openModal = () => {
-    setIsShowModal(true);
-  };
-
-  const closeModal = () => {
-    setIsShowModal(false);
-  };
+  const handlerOnClick = useCallback(() => {
+    dispatch(setCurrentIngredient(ingredient));
+  }, [dispatch, ingredient]);
 
   return (
     <>
-      <div className={s.container} onClick={openModal}>
-        {count && <Counter count={count} size="default" />}
-        <img alt={data.name} src={data.image} className={s.img} />
+      <div className={s["container"]} onClick={handlerOnClick}>
+        {ingredient?.count > 0 && (
+          <Counter count={ingredient.count} size="default" />
+        )}
+        <img
+          ref={dragRef}
+          style={{ opacity }}
+          alt={ingredient.name}
+          src={ingredient.image}
+          className={s.img}
+        />
         <div className="constructor-element__price mb-2 mt-2">
-          {data.price}
+          {ingredient.price}
           <CurrencyIcon type="primary" />
         </div>
-        <p className={(s.title, `text text_type_main-default`)}>{data.name}</p>
+        <p className={(s.title, `text text_type_main-default`)}>
+          {ingredient.name}
+        </p>
       </div>
-
-      {isShowModal && (
-        <Modal title={"Детали ингредиента"} onClose={closeModal}>
-          <IngredientDetails data={data} />
-        </Modal>
-      )}
     </>
   );
 };

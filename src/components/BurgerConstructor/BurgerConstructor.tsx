@@ -1,81 +1,108 @@
-import React, { useMemo, useState } from "react";
-import {
-  Button,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import React from "react";
 import BurgerConstructorCard from "./BurgerConstructorCard/BurgerConstructorCard";
-import { DataApi } from "../../models";
 import s from "./BurgerConstructor.module.css";
-
+import { useStore } from "../../hooks/useStore";
+import BurgerConstructorEmpty from "./BurgerConstructorEmpty/BurgerConstructorEmpty";
+import { updateCountIngredient } from "../../store/burgerIngredientsSlice";
+import { useDrop } from "react-dnd";
+import shortid from "shortid";
+import { useDispatch } from "../../hooks/useDispatch";
+import { BurgerIngredientType } from "../../models";
+import { setBun, setToppings } from "../../store/burgerConstructorSlice";
+import BurgerConstructorTotal from "./BurgerConstructorTotal/BurgerConstructorTotal";
+import BurgerConstructorToppingsList from "./BurgerConstructorToppingList/BurgerConstructorToppingList";
 import cn from "classnames";
-import Modal from "../Modal/Modal";
-import OrderDetails from "../OrderDetails/OrderDetails";
 
-type BurgerConstructorProps = {
-  data: DataApi[];
-};
+const BurgerConstructor: React.FC = () => {
+  const dispatch = useDispatch();
+  const {
+    burgerIngredients: { ingredients, loading },
+    burgerConstructor: { bun, toppings },
+  } = useStore();
 
-const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ data }) => {
-  const [isShowModal, setIsShowModal] = useState(false);
-
-  const openModal = () => {
-    setIsShowModal(true);
+  const dropIngredient = (ingredient: BurgerIngredientType) => {
+    if (ingredient.type === "bun") {
+      if (ingredient._id !== bun?._id) {
+        dispatch(setBun({ ...ingredient, innerId: shortid.generate() }));
+        dispatch(
+          updateCountIngredient(
+            ingredients.map((item) => {
+              if (item._id === ingredient._id) {
+                return { ...item, count: 2 };
+              }
+              if (item.type === "bun") {
+                return { ...item, count: 0 };
+              }
+              return item;
+            })
+          )
+        );
+      }
+    } else {
+      dispatch(
+        setToppings([
+          { ...ingredient, innerId: shortid.generate() },
+          ...toppings,
+        ])
+      );
+      dispatch(
+        updateCountIngredient(
+          ingredients.map((item) => {
+            if (item._id === ingredient._id) {
+              if (item.count) {
+                return { ...item, count: item.count + 1 };
+              }
+              return { ...item, count: 1 };
+            }
+            return item;
+          })
+        )
+      );
+    }
   };
 
-  const closeModal = () => {
-    setIsShowModal(false);
-  };
+  const [{ isHover }, drop] = useDrop({
+    accept: "ingredient",
+    drop: dropIngredient,
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
 
-  const bun = useMemo(
-    () => data.filter((item) => item.type === "bun")[0],
-    [data]
-  );
-
-  const allPrice = useMemo(
-    () => data.reduce((acc, item) => acc + item.price, 0),
-    [data]
-  );
+  const wrapperClasses = cn(s["burgerConstructorWrapper"], {
+    [s["burgerConstructorWrapper_hover"]]: isHover,
+  });
 
   return (
-    <section className={s.section}>
-      <div className={s.burgerConstructorWrapper}>
-        <div className={s.burgerConstructorWrapper__bun}>
-          <BurgerConstructorCard data={bun} type={"top"} isLocked={true} />
-        </div>
-
-        <div className={s.toppingList}>
-          {data
-            .filter((item) => item.type !== "bun")
-            .map((filteredItem, index) => {
-              return <BurgerConstructorCard key={index} data={filteredItem} />;
-            })}
-        </div>
-        <div className={s.burgerConstructorWrapper__bun}>
-          <BurgerConstructorCard data={bun} type={"bottom"} isLocked={true} />
-        </div>
-      </div>
-      <div className={s.totalPriceWrapper}>
-        <div className={s.totalPrice}>
-          <p className={cn(s.totalPrice__price, `constructor-element__price`)}>
-            {allPrice}
-          </p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          onClick={openModal}
-        >
-          Оформить заказ
-        </Button>
-      </div>
-      {isShowModal && (
-        <Modal onClose={closeModal}>
-          <OrderDetails />
-        </Modal>
+    <>
+      {loading === "succeeded" && (
+        <section className={s.section}>
+          <div className={wrapperClasses} ref={drop}>
+            {!bun && !toppings.length && <BurgerConstructorEmpty />}
+            <div className={s.burgerConstructorWrapper__bun}>
+              {bun && (
+                <BurgerConstructorCard
+                  ingredient={bun}
+                  type={"top"}
+                  isLocked={true}
+                />
+              )}
+            </div>
+            {toppings && <BurgerConstructorToppingsList />}
+            <div className={s.burgerConstructorWrapper__bun}>
+              {bun && (
+                <BurgerConstructorCard
+                  ingredient={bun}
+                  type={"bottom"}
+                  isLocked={true}
+                />
+              )}
+            </div>
+          </div>
+          <BurgerConstructorTotal />
+        </section>
       )}
-    </section>
+    </>
   );
 };
 
