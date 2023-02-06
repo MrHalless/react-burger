@@ -7,3 +7,24 @@ export const INGREDIENTS_END_POINTS = {
 export const ORDERS_END_POINTS = {
   POST_ORDERS: "/api/orders",
 };
+
+export const AUTH_END_POINTS = {
+  POST_REGISTER: "/api/auth/register",
+  POST_LOGIN: "/api/auth/login",
+  POST_LOGOUT: "/api/auth/logout",
+  POST_TOKEN: "/api/auth/token",
+};
+
+export const PROFILE_END_POINTS = {
+  POST_FORGOT_PASSWORD: "/api/password-reset",
+  POST_RESET_PASSWORD: "/api/password-reset/reset",
+  GET_USER: "/api/auth/user",
+  PATCH_USER: "/api/auth/user",
+};
+
+export const HEADERS = {
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+};
