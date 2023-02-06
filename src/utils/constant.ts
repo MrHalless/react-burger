@@ -28,3 +28,13 @@ export const HEADERS = {
     "Content-Type": "application/json",
   },
 };
+
+export const ERRORS = {
+  ERROR_NAME: "Кириллица c заглавной буквы, от 2 символов",
+  ERROR_CODE: "Более одного символа",
+  ERROR_EMAIL: "Неправильный формат email",
+  ERROR_PASSWORD: "Пароль должен быть не меньше 6 символов",
+  ERROR_REQUIRED_FIELD: "Это обязательное поле",
+};
+
+export const JWT_EXPIRED = "Bad request: 403 : jwt expired";
