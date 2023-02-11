@@ -1,68 +1,58 @@
-import React, { useCallback, useEffect } from "react";
-import s from "./App.module.css";
-import AppHeader from "../AppHeader/AppHeader";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
+import React, { useEffect } from "react";
+import { useDispatch, useStore } from "../../hooks";
+import { useErrorHandler } from "../../hooks/useErrorHandler";
+import { RoutesApp } from "../../routes/Routes";
 import { fetchIngredients } from "../../store/burgerIngredientsSlice";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { useDispatch, useStore } from "../../hooks/index";
-import { resetCurrentIngredient } from "../../store/currentIngredientSlice";
-import { setOpenOrderModal } from "../../store/orderSlice";
-import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import OrderDetails from "../OrderDetails/OrderDetails";
-import Loader from "../Loader/Loader";
+import { clearError } from "../../store/errorRequestSlice";
+import { getUser, resetUser } from "../../store/profileSlice";
+import AppHeader from "../AppHeader/AppHeader";
 import BadRequest from "../BadRequest/BadRequest";
+import Modal from "../Modal/Modal";
+import s from "./App.module.css";
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+
   const {
-    burgerIngredients: { loading, error },
-    currentIngredient: { isOpen: isOpenCurrentIngredientModal },
-    order: { isOpen: isOpenOrderModal },
+    profile: { user },
+    errorRequest: { isError, message },
   } = useStore();
+
+  const { callErrorHandler } = useErrorHandler();
+
+  const handlerOnCloseErrorModal = () => {
+    dispatch(clearError());
+  };
 
   useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
 
-  const handlerOnCloseCurrentIngredientModal = useCallback(() => {
-    dispatch(resetCurrentIngredient());
-  }, [dispatch]);
+  useEffect(() => {
+    accessToken && dispatch(getUser(accessToken));
+  }, [dispatch, accessToken]);
 
-  const handlerOnCloseOrderModal = useCallback(() => {
-    dispatch(setOpenOrderModal(false));
-  }, [dispatch]);
+  useEffect(() => {
+    callErrorHandler();
+  }, [callErrorHandler]);
+
+  useEffect(() => {
+    !refreshToken && !accessToken && user && dispatch(resetUser());
+  }, [refreshToken, accessToken, user, dispatch]);
 
   return (
     <div className={s["App"]}>
       <AppHeader />
-      <main className={s["App-main-wrapper"]}>
-        {loading === "pending" && <Loader />}
-        {loading === "succeeded" && (
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        )}
-        {loading === "failed" && <BadRequest error={error} />}
-        {isOpenCurrentIngredientModal && (
-          <Modal
-            title={"Детали ингредиента"}
-            onClose={handlerOnCloseCurrentIngredientModal}
-          >
-            <IngredientDetails />
-          </Modal>
-        )}
-        {isOpenOrderModal && (
-          <Modal title={undefined} onClose={handlerOnCloseOrderModal}>
-            <OrderDetails />
-          </Modal>
-        )}
-      </main>
+      <RoutesApp />
+      {isError && (
+        <Modal title="Ошибка" onClose={handlerOnCloseErrorModal}>
+          <BadRequest error={message} />
+        </Modal>
+      )}
     </div>
   );
-}
+};
 
 export default App;

@@ -1,3 +1,5 @@
+import * as yup from "yup";
+
 export const URL = "https://norma.nomoreparties.space";
 
 export const INGREDIENTS_END_POINTS = {
@@ -38,3 +40,15 @@ export const ERRORS = {
 };
 
 export const JWT_EXPIRED = "Bad request: 403 : jwt expired";
+
+export const profileForm = yup
+  .object({
+    name: yup
+      .string()
+      .min(2)
+      .required()
+      .matches(/^[А-ЯЁ][а-яё]+(-[А-ЯЁ][а-яё]*)?$/),
+    email: yup.string().email().required(),
+    password: yup.string().min(6).required(),
+  })
+  .required();

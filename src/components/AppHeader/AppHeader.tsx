@@ -4,34 +4,62 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
+import { useStore } from "../../hooks";
 import s from "./AppHeader.module.css";
 import NavLink from "./NavLink/NavLink";
 
 const AppHeader: React.FC = () => {
+  const {
+    profile: { user },
+    headerNav: { activeLink },
+  } = useStore();
+
+  const main = useMemo(
+    () => (activeLink === "/" ? "primary" : "secondary"),
+    [activeLink]
+  );
+  const feed = useMemo(
+    () => (activeLink === "feed" ? "primary" : "secondary"),
+    [activeLink]
+  );
+  const profile = useMemo(
+    () => (activeLink === "profile" ? "primary" : "secondary"),
+    [activeLink]
+  );
+
   return (
     <header className={s.header}>
       <nav className={s.header__nav}>
         <div className={s.headerButton__wrapper}>
-          <NavLink
-            icon={<BurgerIcon type="primary" />}
-            type={"primary"}
-            text={"Конструктор"}
-          />
-          <NavLink
-            icon={<ListIcon type="secondary" />}
-            type={"secondary"}
-            text={"Лента заказов"}
-          />
+          <Link to="/" className={s.header__link}>
+            <NavLink
+              icon={<BurgerIcon type={main} />}
+              type={main}
+              text={"Конструктор"}
+            />
+          </Link>
+          <Link to="/login" className={s.header__link}>
+            <NavLink
+              icon={<ListIcon type={feed} />}
+              type={feed}
+              text={"Лента заказов"}
+            />
+          </Link>
         </div>
         <div className={s.headerLogo}>
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
         </div>
-        <NavLink
-          icon={<ProfileIcon type="secondary" />}
-          type={"secondary"}
-          text={"Личный кабинет"}
-        />
+        <Link to={user ? "/profile" : "/login"} className={s.header__link}>
+          <NavLink
+            icon={<ProfileIcon type={profile} />}
+            type={profile}
+            text={user ? "Личный кабинет" : "Войти"}
+          />
+        </Link>
       </nav>
     </header>
   );
