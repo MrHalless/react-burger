@@ -65,7 +65,7 @@ export const ResetPasswordPage = () => {
         <form
           name="forgotPassword"
           className="form"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(() => onSubmit)}
         >
           <InputPassword
             error={!!errors.password}
@@ -82,8 +82,7 @@ export const ResetPasswordPage = () => {
             loading={loading === "pending"}
             type="primary"
             size="medium"
-            htmlType={"button"}
-            onClick={handleSubmit(onSubmit)}
+            htmlType="submit"
           >
             <span>Сохранить</span>
           </ButtonWithChildren>

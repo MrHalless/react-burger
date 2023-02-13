@@ -3,6 +3,7 @@ import { LoadingType } from "../models";
 import { AuthApi, UserData } from "../utils/authApi";
 
 export interface AuthStateType extends LoadingType {
+  inLoggedIn: boolean;
   error?: string;
 }
 
@@ -59,6 +60,7 @@ const authSlice = createSlice({
     builder.addCase(postLogin.fulfilled, (state, action) => {
       localStorage.setItem("refreshToken", action.payload.refreshToken);
       localStorage.setItem("accessToken", action.payload.accessToken);
+      state.inLoggedIn = true;
       state.loading = "succeeded";
     });
     builder.addCase(postLogin.rejected, (state, action) => {
@@ -73,6 +75,7 @@ const authSlice = createSlice({
     builder.addCase(postToken.fulfilled, (state, action) => {
       localStorage.setItem("refreshToken", action.payload.refreshToken);
       localStorage.setItem("accessToken", action.payload.accessToken);
+
       state.loading = "succeeded";
     });
     builder.addCase(postToken.rejected, (state, action) => {

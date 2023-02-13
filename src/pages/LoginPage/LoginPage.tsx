@@ -84,8 +84,7 @@ const LoginPage: React.FC = () => {
             loading={loading === "pending"}
             type="primary"
             size="medium"
-            htmlType={"button"}
-            onClick={handleSubmit(onSubmit)}
+            htmlType="submit"
           >
             <span>Войти</span>
           </ButtonWithChildren>

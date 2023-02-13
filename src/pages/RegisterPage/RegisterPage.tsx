@@ -52,7 +52,7 @@ const RegisterPage = () => {
       <ProfileFormContainer title="Вход" links={links}>
         <form
           name="register"
-          className={s["form"]}
+          className="form"
           onSubmit={handleSubmit(onSubmit)}
         >
           <InputText error={!!errors.name} control={control} />
@@ -62,8 +62,7 @@ const RegisterPage = () => {
             loading={loading === "pending"}
             type="primary"
             size="medium"
-            htmlType="button"
-            onClick={handleSubmit(onSubmit)}
+            htmlType="submit"
           >
             <span>Зарегистрироваться</span>
           </ButtonWithChildren>

@@ -78,7 +78,7 @@ const ProfileEdit = () => {
       <form
         name="edit"
         className="form form_end mt-30"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(() => onSubmit)}
       >
         <InputText
           error={!!errors.name}
@@ -118,9 +118,8 @@ const ProfileEdit = () => {
           <ButtonWithChildren
             type="primary"
             size="medium"
-            onClick={handleSubmit(onSubmit)}
             loading={loading === "pending"}
-            htmlType={"button"}
+            htmlType="submit"
           >
             <span>Сохранить</span>
           </ButtonWithChildren>

@@ -6,7 +6,7 @@ import {
   HEADERS as headers,
 } from "./constant";
 
-function request(url: string, options?: RequestInit) {
+export function request(url: string, options?: RequestInit) {
   return fetch(url, options).then(checkResponse);
 }
 

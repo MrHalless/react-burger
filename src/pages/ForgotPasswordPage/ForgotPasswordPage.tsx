@@ -74,8 +74,7 @@ const ForgotPasswordPage = () => {
             loading={loading === "pending"}
             type="primary"
             size="medium"
-            htmlType={"button"}
-            onClick={handleSubmit(onSubmit)}
+            htmlType="submit"
           >
             <span>Восстановить</span>
           </ButtonWithChildren>
