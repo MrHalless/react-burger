@@ -2,7 +2,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import cn from "classnames";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect, useState } from "react";
-import profileEdit from "./profile-edit.module.css";
 import { useDispatch, useStore } from "../../hooks";
 import { profileForm } from "../../utils/constant";
 import { UserData } from "../../utils/authApi";

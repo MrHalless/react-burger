@@ -7,7 +7,9 @@ export interface AuthStateType extends LoadingType {
   error?: string;
 }
 
-const initialAuthState = {} as AuthStateType;
+const initialAuthState = {
+  inLoggedIn: false,
+} as AuthStateType;
 
 export const postRegister = createAsyncThunk(
   "auth/postRegister",
@@ -46,10 +48,12 @@ const authSlice = createSlice({
     builder.addCase(postRegister.fulfilled, (state, action) => {
       localStorage.setItem("refreshToken", action.payload.refreshToken);
       localStorage.setItem("accessToken", action.payload.accessToken);
+      state.inLoggedIn = true;
       state.loading = "succeeded";
     });
     builder.addCase(postRegister.rejected, (state, action) => {
       state.loading = "failed";
+      state.inLoggedIn = false;
       state.error = action.error.message;
     });
 
@@ -65,6 +69,7 @@ const authSlice = createSlice({
     });
     builder.addCase(postLogin.rejected, (state, action) => {
       state.loading = "failed";
+      state.inLoggedIn = false;
       state.error = action.error.message;
     });
 

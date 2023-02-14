@@ -4,7 +4,6 @@ import { useStore } from "../../hooks";
 
 export const ProtectedRoute = ({ redirect, element }: any): any => {
   const location = useLocation();
-
   const {
     auth: { inLoggedIn },
   } = useStore();

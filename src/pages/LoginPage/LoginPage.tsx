@@ -45,10 +45,8 @@ const LoginPage: React.FC = () => {
   const { setActive } = useNavHeader();
 
   const {
-    auth: { loading },
+    auth: { loading, inLoggedIn },
   } = useStore();
-
-  const accessToken = localStorage.getItem("accessToken");
 
   const location = useLocation() as LocationStateType;
   const from = location?.state?.from || "/";
@@ -70,7 +68,7 @@ const LoginPage: React.FC = () => {
     setActive("profile");
   }, [setActive]);
 
-  if (accessToken) {
+  if (inLoggedIn) {
     return <Navigate to={from} />;
   }
 
