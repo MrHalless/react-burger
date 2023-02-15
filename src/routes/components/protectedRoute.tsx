@@ -6,9 +6,10 @@ export const ProtectedRoute = ({ redirect, element }: any): any => {
   const location = useLocation();
   const {
     auth: { inLoggedIn },
+    profile: { user },
   } = useStore();
 
-  return inLoggedIn ? (
+  return inLoggedIn || user ? (
     element
   ) : (
     <Navigate to={redirect} state={{ from: location }} />

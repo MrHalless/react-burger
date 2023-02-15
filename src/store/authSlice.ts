@@ -80,7 +80,6 @@ const authSlice = createSlice({
     builder.addCase(postToken.fulfilled, (state, action) => {
       localStorage.setItem("refreshToken", action.payload.refreshToken);
       localStorage.setItem("accessToken", action.payload.accessToken);
-
       state.loading = "succeeded";
     });
     builder.addCase(postToken.rejected, (state, action) => {
@@ -95,6 +94,7 @@ const authSlice = createSlice({
     builder.addCase(postLogout.fulfilled, (state, action) => {
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("accessToken");
+      state.inLoggedIn = false;
       state.loading = "succeeded";
     });
     builder.addCase(postLogout.rejected, (state, action) => {

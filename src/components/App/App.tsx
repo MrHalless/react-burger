@@ -18,7 +18,6 @@ const App = () => {
   const {
     profile: { user },
     errorRequest: { isError, message },
-    auth: { inLoggedIn },
   } = useStore();
 
   const { callErrorHandler } = useErrorHandler();
@@ -32,8 +31,8 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    accessToken && inLoggedIn && dispatch(getUser(accessToken));
-  }, [dispatch, accessToken, inLoggedIn]);
+    accessToken && dispatch(getUser(accessToken));
+  }, [dispatch, accessToken]);
 
   useEffect(() => {
     callErrorHandler();
