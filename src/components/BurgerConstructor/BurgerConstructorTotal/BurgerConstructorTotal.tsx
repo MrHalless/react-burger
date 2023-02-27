@@ -1,36 +1,40 @@
 import React, { useCallback, useEffect } from "react";
 import cn from "classnames";
-import s from "./BurgerConstructorTotal.module.css";
-import {
-  Button,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
 
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useStore } from "../../../hooks";
+import { useTotalCostOrder } from "../../../hooks/useTotalCostOrder";
+import { useIngredientsIds } from "../../../hooks/useIngredientsIds";
 import {
   postOrders,
   setIngredientsIds,
   setOpenOrderModal,
   setOrderTotal,
 } from "../../../store/orderSlice";
-import { useIngredientsIds } from "../../../hooks/useIngredientsIds";
-import { useTotalCostOrder } from "../../../hooks/useTotalCostOrder";
+import s from "./BurgerConstructorTotal.module.css";
+import { ButtonWithChildren } from "../../ButtonWithChildren/ButtonWithChildren";
 
-const BurgerConstructorTotal: React.FC = () => {
+export const BurgerConstructorTotal = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const {
-    order: { total },
+    order: { total, loading },
+    profile: { user },
   } = useStore();
+
+  const location = useLocation();
 
   const { totalCost } = useTotalCostOrder();
   const { orderIngredientsIds } = useIngredientsIds();
 
   const handlerOnOpenModal = useCallback(() => {
-    dispatch(setOpenOrderModal(true));
-    dispatch(setIngredientsIds(orderIngredientsIds));
-    dispatch(postOrders(orderIngredientsIds));
-  }, [orderIngredientsIds, dispatch]);
+    if (user) {
+      dispatch(setOpenOrderModal(true));
+      dispatch(setIngredientsIds(orderIngredientsIds));
+      dispatch(postOrders(orderIngredientsIds));
+    } else navigate("login", { state: { from: location } });
+  }, [user, orderIngredientsIds, navigate, dispatch, location]);
 
   useEffect(() => {
     dispatch(setOrderTotal(totalCost));
@@ -45,15 +49,15 @@ const BurgerConstructorTotal: React.FC = () => {
           </p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button
+        <ButtonWithChildren
           htmlType="button"
           type="primary"
           size="large"
           onClick={handlerOnOpenModal}
-          disabled={total === 0}
+          disabled={!total}
         >
-          Оформить заказ
-        </Button>
+          <span>Оформить заказ</span>
+        </ButtonWithChildren>
       </div>
     </>
   );

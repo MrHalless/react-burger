@@ -25,3 +25,8 @@
 .headerLogo {
   flex: 1;
 }
+
+.header__link {
+  z-index: 1;
+  text-decoration: none;
+}

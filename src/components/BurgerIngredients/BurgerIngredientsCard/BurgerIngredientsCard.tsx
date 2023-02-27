@@ -7,8 +7,7 @@ import {
 import { useDrag } from "react-dnd";
 import shortid from "shortid";
 import { BurgerIngredientType } from "../../../models";
-import { useDispatch } from "../../../hooks";
-import { setCurrentIngredient } from "../../../store/currentIngredientSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type BurgerIngredientsCardProps = {
   ingredient: BurgerIngredientType;
@@ -17,7 +16,8 @@ type BurgerIngredientsCardProps = {
 const BurgerIngredientsCard: React.FC<BurgerIngredientsCardProps> = ({
   ingredient,
 }) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [{ opacity }, dragRef] = useDrag({
     item: { ...ingredient, innerId: shortid.generate() },
     type: "ingredient",
@@ -26,9 +26,11 @@ const BurgerIngredientsCard: React.FC<BurgerIngredientsCardProps> = ({
     }),
   });
 
-  const handlerOnClick = useCallback(() => {
-    dispatch(setCurrentIngredient(ingredient));
-  }, [dispatch, ingredient]);
+  const handlerOnClick = () => {
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: location },
+    });
+  };
 
   return (
     <>
