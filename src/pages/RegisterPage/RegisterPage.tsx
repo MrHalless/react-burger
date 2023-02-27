@@ -52,7 +52,7 @@ const RegisterPage = () => {
       <ProfileFormContainer title="Вход" links={links}>
         <form
           name="register"
-          className="form"
+          className={s.form}
           onSubmit={handleSubmit(onSubmit)}
         >
           <InputText error={!!errors.name} control={control} />

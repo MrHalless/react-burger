@@ -3,7 +3,15 @@ import { Navigate } from "react-router";
 import { To } from "history";
 import { useStore } from "../../hooks";
 
-export const AuthRoute = ({ redirect, element }: any): any => {
+export interface RoutePropsType {
+  redirect: string;
+  element: JSX.Element;
+}
+
+export const AuthRoute = ({
+  redirect,
+  element,
+}: RoutePropsType): JSX.Element => {
   const {
     profile: { user },
   } = useStore();

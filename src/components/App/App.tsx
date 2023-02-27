@@ -8,6 +8,7 @@ import { getUser, resetUser } from "../../store/profileSlice";
 import AppHeader from "../AppHeader/AppHeader";
 import BadRequest from "../BadRequest/BadRequest";
 import Modal from "../Modal/Modal";
+
 import s from "./App.module.css";
 
 const App = () => {

@@ -25,7 +25,7 @@ export const ProfileFormContainer = ({
   return (
     <div className={s["container"]}>
       <>
-        {title && <span>{title}</span>}
+        {title && <span className={s.title}>{title}</span>}
         {children && children}
         {links && (
           <div className={s["links"]}>

@@ -75,7 +75,7 @@ const LoginPage: React.FC = () => {
   return (
     <main className="center-container">
       <ProfileFormContainer title="Вход" links={links}>
-        <form name="login" className="form" onSubmit={handleSubmit(onSubmit)}>
+        <form name="login" className={s.form} onSubmit={handleSubmit(onSubmit)}>
           <InputEmail error={!!errors.email} control={control} />
           <InputPassword error={!!errors.password} control={control} />
           <ButtonWithChildren
