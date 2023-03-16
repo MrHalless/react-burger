@@ -32,7 +32,7 @@ const AppHeader: React.FC = () => {
   return (
     <header className={s.header}>
       <nav className={s.header__nav}>
-        <div className={s.headerButton__wrapper}>
+        <div className={s.header__wrap}>
           <Link to="/" className={s.header__link}>
             <NavLink
               icon={<BurgerIcon type={main} />}
@@ -40,7 +40,7 @@ const AppHeader: React.FC = () => {
               text={"Конструктор"}
             />
           </Link>
-          <Link to="/login" className={s.header__link}>
+          <Link to="/feed" className={s.header__link}>
             <NavLink
               icon={<ListIcon type={feed} />}
               type={feed}
@@ -48,7 +48,7 @@ const AppHeader: React.FC = () => {
             />
           </Link>
         </div>
-        <div className={s.headerLogo}>
+        <div className={s.header__logo}>
           <Link to="/">
             <Logo />
           </Link>

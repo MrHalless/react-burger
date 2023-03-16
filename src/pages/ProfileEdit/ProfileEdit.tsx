@@ -76,7 +76,7 @@ const ProfileEdit = () => {
     <ProfileFormContainer>
       <form
         name="edit"
-        className="form form_end mt-30"
+        className={s.form}
         onSubmit={handleSubmit(() => onSubmit)}
       >
         <InputText
