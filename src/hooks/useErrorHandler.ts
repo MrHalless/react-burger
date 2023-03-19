@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { clearAuthError, postToken } from "../store/authSlice";
 import { setError } from "../store/errorRequestSlice";
+import { clearOrderError } from "../store/orderSlice";
 import { clearProfileError } from "../store/profileSlice";
 import { JWT_EXPIRED } from "../utils/constant";
 import { useDispatch } from "./useDispatch";
@@ -21,15 +22,25 @@ export const useErrorHandler = () => {
   );
 
   const callErrorHandler = () => {
-    errorProfile === JWT_EXPIRED &&
-      dispatch(clearProfileError()) &&
-      dispatch(postToken(refreshToken));
-    errorProfile &&
-      errorProfile !== JWT_EXPIRED &&
-      setRequestError(errorProfile) &&
+    if (errorProfile === JWT_EXPIRED) {
       dispatch(clearProfileError());
-    errorAuth && setRequestError(errorAuth) && dispatch(clearAuthError());
-    errorOrder && setRequestError(errorOrder) && dispatch(clearAuthError());
+      dispatch(postToken(refreshToken));
+    }
+
+    if (errorProfile && errorProfile !== JWT_EXPIRED) {
+      setRequestError(errorProfile);
+      dispatch(clearProfileError());
+    }
+
+    if (errorAuth) {
+      setRequestError(errorAuth);
+      dispatch(clearAuthError());
+    }
+
+    if (errorOrder && errorOrder !== JWT_EXPIRED) {
+      setRequestError(errorOrder);
+      dispatch(clearOrderError());
+    }
   };
 
   return { callErrorHandler };

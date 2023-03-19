@@ -1,20 +1,58 @@
-import React from "react";
+import React, { useEffect } from "react";
 import cn from "classnames";
 import doneIcon from "../../images/doneIcon.svg";
 import s from "./OrderDetails.module.css";
-import { useStore } from "../../hooks";
+import { useDispatch, useStore } from "../../hooks";
 import Loader from "../Loader/Loader";
 import BadRequest from "../BadRequest/BadRequest";
+import { resetBurgerConstructor } from "../../store/burgerConstructorSlice";
+import { resetCountIngredients } from "../../store/burgerIngredientsSlice";
+import { JWT_EXPIRED } from "../../utils/constant";
+import { postToken } from "../../store/authSlice";
+import { postOrders } from "../../store/orderSlice";
+import { formatOrderNumber } from "../../utils/formatOrderNumber";
 
 const OrderDetails: React.FC = () => {
   const {
-    order: { num, error, loading },
+    order: { num, error, loading, ingredientsIds },
+    auth: { loading: loadingToken },
   } = useStore();
+
+  const dispatch = useDispatch();
+
+  const refreshToken = localStorage.getItem("refreshToken");
+  const accessToken = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    if (loading === "succeeded") {
+      dispatch(resetBurgerConstructor());
+      dispatch(resetCountIngredients());
+    }
+
+    if (loading === "failed") {
+      if (error === JWT_EXPIRED) {
+        dispatch(postToken(refreshToken));
+        if (accessToken && loadingToken === "succeeded") {
+          dispatch(
+            postOrders({ ingredientsIds: ingredientsIds, token: accessToken })
+          );
+        }
+      }
+    }
+  }, [
+    loading,
+    dispatch,
+    refreshToken,
+    accessToken,
+    error,
+    ingredientsIds,
+    loadingToken,
+  ]);
 
   return (
     <>
       <div className={cn(s["order-details"])}>
-        {loading === "pending" && <Loader />}
+        {(loading === "pending" || error === JWT_EXPIRED) && <Loader />}
         {loading === "succeeded" && (
           <span
             className={cn(
@@ -22,10 +60,12 @@ const OrderDetails: React.FC = () => {
               "text text_type_digits-large mt-4 mb-8"
             )}
           >
-            {num}
+            {formatOrderNumber(String(num))}
           </span>
         )}
-        {loading === "failed" && <BadRequest error={error} />}
+        {loading === "failed" && error !== JWT_EXPIRED && (
+          <BadRequest error={error} />
+        )}
         <h3 className={"text text_type_main-medium mb-15"}>
           идентификатор заказа
         </h3>

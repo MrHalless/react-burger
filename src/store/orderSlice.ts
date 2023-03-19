@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LoadingType } from "../models/index";
-import { postOrdersData } from "../utils/getData";
+import { LoadingType } from "../models";
+import { IngredientsIdsPropsType, ordersApi } from "../utils/ordersApi";
+
 export interface OrderStateType extends LoadingType {
   isOpen: boolean;
   num: string | null;
@@ -19,9 +20,9 @@ const initialIngredientsState = {
 
 export const postOrders = createAsyncThunk(
   "currentIngredient/postOrders",
-  async (ingredients: string[]) => {
-    const response = await postOrdersData(ingredients);
-    return response.order.number;
+  async (body: IngredientsIdsPropsType) => {
+    const response = await ordersApi.postOrders(body);
+    return response;
   }
 );
 
@@ -42,6 +43,9 @@ const orderSlice = createSlice({
       state.isOpen = false;
       state.num = null;
     },
+    clearOrderError: (state) => {
+      state.error = undefined;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(postOrders.pending, (state) => {
@@ -49,7 +53,7 @@ const orderSlice = createSlice({
       state.error = undefined;
     });
     builder.addCase(postOrders.fulfilled, (state, action) => {
-      state.num = action.payload;
+      state.num = action.payload.order.number;
       state.loading = "succeeded";
     });
     builder.addCase(postOrders.rejected, (state, action) => {
@@ -64,5 +68,6 @@ export const {
   setOrderTotal,
   setOpenOrderModal,
   resetOrder,
+  clearOrderError,
 } = orderSlice.actions;
 export const orderReducer = orderSlice.reducer;

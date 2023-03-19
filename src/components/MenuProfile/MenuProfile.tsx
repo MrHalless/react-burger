@@ -47,10 +47,13 @@ export const MenuProfile = () => {
               activeItem === item.id && s.item_active
             )}
             onClick={() => {
-              activeItem !== item.id &&
-                dispatch(setActiveMenuProfileItem(item.id)) &&
-                navigate(item.linkTo, { replace: true });
-              item.id === "logout" && dispatch(postLogout(refreshToken));
+              if (activeItem !== item.id) {
+                navigate(item.linkTo);
+                dispatch(setActiveMenuProfileItem(item.id));
+              }
+              if (item.id === "logout") {
+                dispatch(postLogout(refreshToken));
+              }
             }}
           >
             {item.text}

@@ -23,6 +23,7 @@ export const BurgerConstructorTotal = () => {
     profile: { user },
   } = useStore();
 
+  const accessToken = localStorage.getItem("accessToken");
   const location = useLocation();
 
   const { totalCost } = useTotalCostOrder();
@@ -31,10 +32,17 @@ export const BurgerConstructorTotal = () => {
   const handlerOnOpenModal = useCallback(() => {
     if (user) {
       dispatch(setOpenOrderModal(true));
-      dispatch(setIngredientsIds(orderIngredientsIds));
-      dispatch(postOrders(orderIngredientsIds));
+      dispatch(setIngredientsIds([...orderIngredientsIds]));
+      if (accessToken) {
+        dispatch(
+          postOrders({
+            ingredientsIds: [...orderIngredientsIds],
+            token: accessToken,
+          })
+        );
+      }
     } else navigate("login", { state: { from: location } });
-  }, [user, orderIngredientsIds, navigate, dispatch, location]);
+  }, [user, orderIngredientsIds, navigate, dispatch, location, accessToken]);
 
   useEffect(() => {
     dispatch(setOrderTotal(totalCost));
