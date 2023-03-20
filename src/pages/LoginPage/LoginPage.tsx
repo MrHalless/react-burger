@@ -12,6 +12,7 @@ import { InputEmail } from "../../components/ProfileFormContainer/InputEmail/Inp
 import { InputPassword } from "../../components/ProfileFormContainer/InputPassword/InputPassword";
 import { ButtonWithChildren } from "../../components/ButtonWithChildren/ButtonWithChildren";
 import s from "./LoginPage.module.css";
+import { wsClose } from "../../store/ordersSlice";
 
 export interface LocationStateType {
   pathname: string;
@@ -62,6 +63,7 @@ const LoginPage: React.FC = () => {
 
   const onSubmit = (data: FieldValues) => {
     dispatch(postLogin(data as Omit<UserData, "name">));
+    dispatch(wsClose());
   };
 
   useEffect(() => {
