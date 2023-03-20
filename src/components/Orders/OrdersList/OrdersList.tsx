@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import s from "./OrdersList.module.css";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { feedRegExp, profileRegExp } from "../../../utils/regexp";
-import cn from "classnames";
 import { useStore } from "../../../hooks";
 import { OrdersType } from "../../../models";
-import { OrdersCard } from "../OrdersCard/OrdersCard";
 import Loader from "../../Loader/Loader";
+import OrdersCard from "../OrdersCard/OrdersCard";
+import cn from "classnames";
+import s from "./OrdersList.module.css";
 
 const OrdersList: React.FC = () => {
   const location = useLocation();
@@ -20,6 +20,7 @@ const OrdersList: React.FC = () => {
   const [profileOrdersData, setProfileOrdersData] = useState<OrdersType | null>(
     null
   );
+
   useEffect(() => {
     if (isProfile) {
       if (ordersData?.orders) {
@@ -27,7 +28,7 @@ const OrdersList: React.FC = () => {
         setProfileOrdersData({ ...ordersData, orders: reversOrders.reverse() });
       }
     }
-  }, [isProfile, ordersData, profileOrdersData]);
+  }, [isProfile, ordersData]);
 
   return (
     <div className={cn(s.list, isProfile && s.list_profile)}>
@@ -46,4 +47,4 @@ const OrdersList: React.FC = () => {
   );
 };
 
-export default OrdersList;
+export default React.memo(OrdersList);

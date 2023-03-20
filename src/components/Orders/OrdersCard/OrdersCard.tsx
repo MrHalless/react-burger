@@ -1,3 +1,4 @@
+import React from "react";
 import cn from "classnames";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import shortid from "shortid";
@@ -13,7 +14,7 @@ import s from "./OrdersCard.module.css";
 import { formatOrderNumber } from "../../../utils/formatOrderNumber";
 import { IngredientPreview } from "../../IngredientPreview/IngredientPreview";
 
-export const OrdersCard = ({
+const OrdersCard = ({
   _id,
   status,
   name,
@@ -91,3 +92,5 @@ export const OrdersCard = ({
     </div>
   );
 };
+
+export default React.memo(OrdersCard);
