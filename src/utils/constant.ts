@@ -1,6 +1,9 @@
 import * as yup from "yup";
 
 export const URL = "https://norma.nomoreparties.space";
+export const SOCKET = "wss://norma.nomoreparties.space/orders";
+
+export const ALL_ORDERS = "/all";
 
 export const INGREDIENTS_END_POINTS = {
   GET_INGREDIENTS: "/api/ingredients",

@@ -1,19 +1,19 @@
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useStore } from "../../hooks";
-import { RoutePropsType } from "./authRoute";
+import { Navigate, useLocation } from "react-router";
+
+export interface RoutePropsType {
+  redirect: string;
+  element: JSX.Element;
+}
 
 export const ProtectedRoute = ({
   redirect,
   element,
 }: RoutePropsType): JSX.Element => {
+  const accessToken = localStorage.getItem("accessToken");
   const location = useLocation();
-  const {
-    auth: { inLoggedIn },
-    profile: { user },
-  } = useStore();
 
-  return inLoggedIn || user ? (
+  return accessToken ? (
     element
   ) : (
     <Navigate to={redirect} state={{ from: location }} />

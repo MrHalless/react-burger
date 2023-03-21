@@ -9,7 +9,7 @@ import {
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 
-export const IngredientModal = () => {
+const IngredientModal: React.FC = () => {
   const dispatch = useDispatch();
 
   const {
@@ -41,3 +41,5 @@ export const IngredientModal = () => {
     </Modal>
   );
 };
+
+export default IngredientModal;

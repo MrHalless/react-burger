@@ -27,7 +27,7 @@ const links = [
   },
 ];
 
-export const ResetPasswordPage = () => {
+const ResetPasswordPage: React.FC = () => {
   const dispatch = useDispatch();
 
   const {
@@ -91,3 +91,5 @@ export const ResetPasswordPage = () => {
     </main>
   );
 };
+
+export default ResetPasswordPage;
