@@ -46,7 +46,7 @@ const LoginPage: React.FC = () => {
   const { setActive } = useNavHeader();
 
   const {
-    auth: { loading, inLoggedIn },
+    auth: { loading },
   } = useStore();
 
   const location = useLocation() as LocationStateType;
@@ -69,10 +69,6 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     setActive("profile");
   }, [setActive]);
-
-  if (inLoggedIn) {
-    return <Navigate to={from} />;
-  }
 
   return (
     <main className="center-container">

@@ -3,13 +3,10 @@ import { LoadingType } from "../models";
 import { AuthApi, UserData } from "../utils/authApi";
 
 export interface AuthStateType extends LoadingType {
-  inLoggedIn: boolean;
   error?: string;
 }
 
-const initialAuthState = {
-  inLoggedIn: false,
-} as AuthStateType;
+export const initialAuthState = {} as AuthStateType;
 
 export const postRegister = createAsyncThunk(
   "auth/postRegister",
@@ -48,12 +45,10 @@ const authSlice = createSlice({
     builder.addCase(postRegister.fulfilled, (state, action) => {
       localStorage.setItem("refreshToken", action.payload.refreshToken);
       localStorage.setItem("accessToken", action.payload.accessToken);
-      state.inLoggedIn = true;
       state.loading = "succeeded";
     });
     builder.addCase(postRegister.rejected, (state, action) => {
       state.loading = "failed";
-      state.inLoggedIn = false;
       state.error = action.error.message;
     });
 
@@ -64,12 +59,10 @@ const authSlice = createSlice({
     builder.addCase(postLogin.fulfilled, (state, action) => {
       localStorage.setItem("refreshToken", action.payload.refreshToken);
       localStorage.setItem("accessToken", action.payload.accessToken);
-      state.inLoggedIn = true;
       state.loading = "succeeded";
     });
     builder.addCase(postLogin.rejected, (state, action) => {
       state.loading = "failed";
-      state.inLoggedIn = false;
       state.error = action.error.message;
     });
 
@@ -94,7 +87,6 @@ const authSlice = createSlice({
     builder.addCase(postLogout.fulfilled, (state, action) => {
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("accessToken");
-      state.inLoggedIn = false;
       state.loading = "succeeded";
     });
     builder.addCase(postLogout.rejected, (state, action) => {

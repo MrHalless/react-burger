@@ -9,7 +9,7 @@ export interface OrdersStateType {
   error?: string;
 }
 
-const initialOrdersState = {
+export const initialOrdersState = {
   ordersData: null,
   socket: false,
 } as OrdersStateType;
@@ -50,6 +50,7 @@ export const {
   clearOrdersData,
   wsInit,
   wsClose,
+  wsOpen,
 } = ordersSlice.actions;
 
 export const ordersReducer = ordersSlice.reducer;

@@ -5,7 +5,7 @@ export interface ErrorRequestStateType {
   message: string;
 }
 
-const initialErrorRequestState = {
+export const initialErrorRequestState = {
   isError: false,
   message: "",
 } as ErrorRequestStateType;
