@@ -20,6 +20,9 @@
   margin-right: auto;
 }
 
-.modal svg {
+.buttonClose {
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 }

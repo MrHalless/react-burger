@@ -1,3 +1,9 @@
+# react-burger
+
+Graduation project for Yandex.Praktikum React-developer course
+
+«[Stellar Burgers on GH-Pages](https://mrhalless.github.io/react-burger/)»
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

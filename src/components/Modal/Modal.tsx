@@ -38,7 +38,9 @@ const Modal: React.FC<ModalProps> = ({ children, title, onClose }) => {
               {title}
             </h2>
           )}
-          <CloseIcon type="primary" onClick={onClose} />
+          <button className={s.buttonClose}>
+            <CloseIcon type="primary" onClick={onClose} />
+          </button>
         </div>
         {children}
       </div>
