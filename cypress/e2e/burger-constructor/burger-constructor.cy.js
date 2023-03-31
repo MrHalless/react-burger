@@ -9,7 +9,7 @@ console.log(testBun);
 describe("service is available", function () {
   beforeEach(() => {
     cy.viewport(1280, 720);
-    cy.visit("/");
+    cy.visit("http://localhost:3000");
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(3000);
   });
@@ -52,7 +52,7 @@ describe("service is available", function () {
 
     cy.get("button").contains("Оформить заказ").click();
 
-    cy.get('input[type*="email"]').click().type("mock@email.com");
+    cy.get('input[type*="email"]').click().type("jkjkkj@yandex.ru");
     cy.get('input[type*="password"]').click().type("123456");
     cy.get("button").contains("Войти").click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
