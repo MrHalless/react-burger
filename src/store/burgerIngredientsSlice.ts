@@ -5,14 +5,13 @@ import { LoadingType } from "../models";
 
 export interface BurgerIngredientsStateType extends LoadingType {
   loading: "idle" | "pending" | "succeeded" | "failed";
-  currentTab: "bun" | "sause" | "main";
-  bunsRef: null | JSX.Element;
+  currentTab: "buns" | "sause" | "main";
   ingredients: BurgerIngredientType[];
 }
 
-const initialIngredientsState = {
+export const initialIngredientsState = {
   loading: "idle",
-  currentTab: "bun",
+  currentTab: "buns",
   ingredients: [],
 } as unknown as BurgerIngredientsStateType;
 
@@ -44,6 +43,7 @@ const burgerIngredientsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchIngredients.pending, (state) => {
       state.loading = "pending";
+      state.error = undefined;
     });
     builder.addCase(fetchIngredients.fulfilled, (state, action) => {
       state.ingredients = action.payload;

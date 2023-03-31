@@ -10,7 +10,7 @@ export interface OrderStateType extends LoadingType {
   error?: string;
 }
 
-const initialIngredientsState = {
+export const initialOrderState = {
   isOpen: false,
   loading: "idle",
   num: null,
@@ -19,7 +19,7 @@ const initialIngredientsState = {
 } as OrderStateType;
 
 export const postOrders = createAsyncThunk(
-  "currentIngredient/postOrders",
+  "order/postOrders",
   async (body: IngredientsIdsPropsType) => {
     const response = await ordersApi.postOrders(body);
     return response;
@@ -27,8 +27,8 @@ export const postOrders = createAsyncThunk(
 );
 
 const orderSlice = createSlice({
-  name: "currentIngredient",
-  initialState: initialIngredientsState,
+  name: "order",
+  initialState: initialOrderState,
   reducers: {
     setIngredientsIds: (state, action) => {
       state.ingredientsIds = action.payload;

@@ -55,3 +55,7 @@ export const profileForm = yup
     password: yup.string().min(6).required(),
   })
   .required();
+
+export const testBun = "Краторная булка N-200i";
+export const modalButton = "[class^=Modal_buttonClose]";
+export const constructorSection = "[class^=BurgerConstructor_section]";

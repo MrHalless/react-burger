@@ -18,7 +18,7 @@ export interface ProfileStateType extends LoadingType {
   error?: string;
 }
 
-const initialProfileState = {
+export const initialProfileState = {
   user: null,
   passwordIsSend: false,
 } as ProfileStateType;

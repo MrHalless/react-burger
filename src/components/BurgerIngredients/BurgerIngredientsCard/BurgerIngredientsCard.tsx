@@ -35,7 +35,7 @@ const BurgerIngredientsCard: React.FC<BurgerIngredientsCardProps> = ({
   return (
     <>
       <div className={s["container"]} onClick={handlerOnClick}>
-        {ingredient?.count > 0 && (
+        {!!ingredient.count && (
           <Counter count={ingredient.count} size="default" />
         )}
         <img

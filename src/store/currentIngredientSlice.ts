@@ -3,12 +3,11 @@ import { BurgerIngredientType } from "../models/api";
 
 export interface CurrentIngredientStateType {
   isOpen: boolean;
-  ingredient: BurgerIngredientType | null;
+  ingredient?: BurgerIngredientType;
 }
 
-const initialIngredientState = {
+export const initialIngredientState = {
   isOpen: false,
-  ingredient: null,
 } as CurrentIngredientStateType;
 
 const currentIngredientSlice = createSlice({
@@ -21,7 +20,7 @@ const currentIngredientSlice = createSlice({
     },
     resetCurrentIngredient: (state) => {
       state.isOpen = false;
-      state.ingredient = null;
+      state.ingredient = undefined;
     },
   },
 });
